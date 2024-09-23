@@ -1,0 +1,102 @@
+iOS Project Configuration with xcconfig
+
+This document provides a step-by-step guide to manage multiple iOS targets and update the version and build numbers in one place for all targets using xcconfig files.
+
+Step 1: Create an xcconfig File
+
+Create a Configuration File:
+In Xcode, go to File > New > File.
+Select Configuration Settings File under the Other section.
+Name your file, for example, AppConfig.xcconfig.
+Add Version and Build Settings to the xcconfig File:
+Open the newly created .xcconfig file.
+Add the following lines to define your version and build numbers:
+plaintext
+Copy code
+VERSION_NUMBER = 1.0.0
+BUILD_NUMBER = 1
+Step 2: Use the xcconfig File in Your Targets
+
+Assign the xcconfig File to Your Targets:
+Select your project in the Xcode navigator.
+Select the first target you want to configure.
+Go to the Build Settings tab.
+Scroll down to the Configurations section.
+For each configuration (Debug, Release, etc.), click on the configuration name and select Based on Configuration File, then choose your AppConfig.xcconfig file.
+Repeat this for each target.
+Step 3: Reference the Variables in Info.plist
+
+Update Info.plist Files:
+For each target, open its Info.plist file.
+Replace the values for CFBundleShortVersionString and CFBundleVersion with the variables from your xcconfig file:
+xml
+Copy code
+<key>CFBundleShortVersionString</key>
+<string>$(VERSION_NUMBER)</string>
+<key>CFBundleVersion</key>
+<string>$(BUILD_NUMBER)</string>
+Step 4: Clean Build
+
+Perform a clean build to ensure the changes are picked up:
+
+In Xcode, go to Product > Clean Build Folder (hold the Option key while selecting the Product menu to reveal the option).
+After cleaning, build the project again.
+Step 5: Verify Build Settings
+
+Double-check that the build settings for your targets are correctly picking up the variables from the xcconfig file:
+
+Select your project in the Xcode navigator.
+Select a target and go to the Build Settings tab.
+In the search bar, type version.
+Ensure that Current Project Version and Versioning settings are correctly set to use $(BUILD_NUMBER) and $(VERSION_NUMBER).
+Step 6: Check Target Dependencies
+
+Ensure there are no target dependencies or schemes that might be overriding the version and build numbers.
+
+Example Configuration
+
+AppConfig.xcconfig
+plaintext
+Copy code
+VERSION_NUMBER = 1.0.0
+BUILD_NUMBER = 1
+Info.plist
+xml
+Copy code
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>$(DEVELOPMENT_LANGUAGE)</string>
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+    <key>CFBundleIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>$(PRODUCT_NAME)</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>$(VERSION_NUMBER)</string>
+    <key>CFBundleVersion</key>
+    <string>$(BUILD_NUMBER)</string>
+    <key>LSRequiresIPhoneOS</key>
+    <true/>
+    <key>UILaunchStoryboardName</key>
+    <string>LaunchScreen</string>
+    <key>UIRequiredDeviceCapabilities</key>
+    <array>
+        <string>armv7</string>
+    </array>
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+</dict>
+</plist>
+By following these steps, you ensure that the version and build numbers are consistent across all targets and can be managed from a single location.
